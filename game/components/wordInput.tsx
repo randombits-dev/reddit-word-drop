@@ -1,12 +1,12 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '../utils';
 
 export function PlaceholdersAndVanishInput({
-  placeholders,
-  onChange,
-  onSubmit,
-}: {
+                                             placeholders,
+                                             onChange,
+                                             onSubmit,
+                                           }: {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
@@ -146,7 +146,7 @@ export function PlaceholdersAndVanishInput({
     if (value && inputRef.current) {
       const maxX = newDataRef.current.reduce(
         (prev, current) => (current.x > prev ? current.x : prev),
-        0
+        0,
       );
       animate(maxX);
     }
@@ -167,13 +167,13 @@ export function PlaceholdersAndVanishInput({
     <div
       className={cn(
         'relative mx-auto h-12 w-full max-w-xl overflow-hidden rounded-full bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 dark:bg-zinc-800',
-        value && 'bg-gray-50'
+        value && 'bg-gray-50',
       )}
     >
       <canvas
         className={cn(
           'pointer-events-none absolute left-2 top-[20%] origin-top-left scale-50 transform pr-20 text-base invert filter sm:left-8 dark:invert-0',
-          !animating ? 'opacity-0' : 'opacity-100'
+          !animating ? 'opacity-0' : 'opacity-100',
         )}
         ref={canvasRef}
       />
@@ -191,7 +191,7 @@ export function PlaceholdersAndVanishInput({
         autoCorrect="off"
         className={cn(
           'relative z-50 h-full w-full rounded-full border-none bg-transparent pl-4 pr-20 text-sm text-black focus:outline-none focus:ring-0 sm:pl-10 sm:text-base dark:text-white',
-          animating && 'text-transparent dark:text-transparent'
+          animating && 'text-transparent dark:text-transparent',
         )}
       />
 

@@ -1,8 +1,7 @@
-import { Devvit, useAsync, useState } from '@devvit/public-api';
-import { DEVVIT_SETTINGS_KEYS } from './constants.js';
+import { Devvit, useState } from '@devvit/public-api';
+import { DEVVIT_SETTINGS_KEYS, WEBVIEW_ID } from './constants.js';
 import { sendMessageToWebview } from './utils/utils.js';
 import { WebviewToBlockMessage } from '../game/shared.js';
-import { WEBVIEW_ID } from './constants.js';
 import { Preview } from './components/Preview.js';
 import { getPokemonByName } from './core/pokeapi.js';
 
@@ -26,7 +25,7 @@ Devvit.configure({
 
 Devvit.addMenuItem({
   // Please update as you work on your idea!
-  label: 'Make my experience post',
+  label: 'Add Webview Post',
   location: 'subreddit',
   forUserType: 'moderator',
   onPress: async (_event, context) => {
@@ -34,7 +33,7 @@ Devvit.addMenuItem({
     const subreddit = await reddit.getCurrentSubreddit();
     const post = await reddit.submitPost({
       // Title of the post. You'll want to update!
-      title: 'My first experience post',
+      title: 'My webview post',
       subredditName: subreddit.name,
       preview: <Preview />,
     });
@@ -45,7 +44,7 @@ Devvit.addMenuItem({
 
 // Add a post type definition
 Devvit.addCustomPostType({
-  name: 'Experience Post',
+  name: 'Webview Post Post',
   height: 'tall',
   render: (context) => {
     const [launched, setLaunched] = useState(false);
