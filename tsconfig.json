@@ -1,10 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["esnext", "dom", "DOM.Iterable"],
+    "lib": [
+      "esnext",
+      "dom",
+      "DOM.Iterable"
+    ],
     "target": "esnext",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["./src/**/*"],
+  "include": [
+    "./src/**/*"
+  ],
   "extends": "@devvit/public-api/devvit.tsconfig.json"
 }
