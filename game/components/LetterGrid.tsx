@@ -52,7 +52,7 @@ export const LetterGrid = () => {
             {
               row.map((letter, j) => (
                 <div
-                  className="w-[40px] h-[40px] rounded-lg text-center flex items-center justify-center"
+                  className="w-[30px] h-[30px] rounded-lg text-center flex items-center justify-center"
                   style={{ backgroundColor: boxColor(i, j) }}
 
                   onMouseOver={(e) => onMouseOver(e, i, j)}>

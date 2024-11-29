@@ -3,7 +3,6 @@ import { DEVVIT_SETTINGS_KEYS, WEBVIEW_ID } from './constants.js';
 import { sendMessageToWebview } from './utils/utils.js';
 import { WebviewToBlockMessage } from '../game/shared.js';
 import { Preview } from './components/Preview.js';
-import { getPokemonByName } from './core/pokeapi.js';
 
 Devvit.addSettings([
   // Just here as an example
@@ -19,8 +18,8 @@ Devvit.addSettings([
 Devvit.configure({
   redditAPI: true,
   http: true,
-  redis: true,
-  realtime: true,
+  // redis: true,
+  // realtime: true,
 });
 
 Devvit.addMenuItem({
@@ -70,19 +69,11 @@ Devvit.addCustomPostType({
                     },
                   });
                   break;
-                case 'GET_POKEMON_REQUEST':
+                case 'ADD_RESULTS':
                   context.ui.showToast({ text: `Received message: ${JSON.stringify(data)}` });
-                  const pokemon = await getPokemonByName(data.payload.name);
-
-                  sendMessageToWebview(context, {
-                    type: 'GET_POKEMON_RESPONSE',
-                    payload: {
-                      name: pokemon.name,
-                      number: pokemon.id,
-                      // Note that we don't allow outside images on Reddit if
-                      // wanted to get the sprite. Please reach out to support
-                      // if you need this for your app!
-                    },
+                  void context.reddit.submitComment({
+                    id: context.postId!,
+                    text: data.payload,
                   });
                   break;
 
