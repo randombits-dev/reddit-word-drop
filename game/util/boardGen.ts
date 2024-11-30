@@ -34,15 +34,15 @@ const accumulatedWeights = Object.values(weights).reduce((acc, weight) => {
   return acc;
 }, [0]);
 
-const vowels = ['A', 'E', 'I', 'O', 'U'];
+// const vowels = ['A', 'E', 'I', 'O', 'U'];
 
 export const generateBoard = () => {
-  for (const [key, weight] of Object.entries(weights)) {
-    weights[key] = Math.cbrt(weight);
-    if (!vowels.includes(key)) {
-      weights[key] = weights[key] / 2;
-    }
-  }
+  // for (const [key, weight] of Object.entries(weights)) {
+  //   weights[key] = Math.cbrt(weight);
+  //   if (!vowels.includes(key)) {
+  //     weights[key] = weights[key] / 2;
+  //   }
+  // }
 
   const rows = [];
   for (let i = 0; i < 8; i++) {
@@ -77,14 +77,14 @@ export const generateBoard = () => {
 
 // TODO: Handle Qu
 
-function makeDistribution(weights: { [key: string]: number }) {
-  const distribution = [];
-  for (const [key, weight] of Object.entries(weights)) {
-    const resolution = 10;
-    const frequency = Math.floor(weight * resolution);
-    for (let i = 0; i < frequency; i++) {
-      distribution.push(key);
-    }
-  }
-  return distribution;
-}
+// function makeDistribution(weights: { [key: string]: number }) {
+//   const distribution = [];
+//   for (const [key, weight] of Object.entries(weights)) {
+//     const resolution = 10;
+//     const frequency = Math.floor(weight * resolution);
+//     for (let i = 0; i < frequency; i++) {
+//       distribution.push(key);
+//     }
+//   }
+//   return distribution;
+// }

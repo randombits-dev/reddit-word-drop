@@ -5,3 +5,45 @@
 body {
   height: 512px;
 }
+
+@keyframes fall-1 {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(50px);
+  }
+}
+
+.fall-1 {
+  animation-name: fall-1;
+  animation-duration: 1s;
+}
+
+@keyframes fall-2 {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(100px);
+  }
+}
+
+.fall-2 {
+  animation-name: fall-2;
+  animation-duration: 2s;
+}
+
+@keyframes fall-3 {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(150px);
+  }
+}
+
+.fall-3 {
+  animation-name: fall-3;
+  animation-duration: 3s;
+}

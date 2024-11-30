@@ -1,5 +1,5 @@
 import { cn, sendToDevvit } from '../utils';
-import { LetterGrid } from '../components/LetterGrid.tsx';
+import { LetterGridSvg } from '../components/LetterGridSvg.tsx';
 
 
 export const HomePage = () => {
@@ -10,6 +10,8 @@ export const HomePage = () => {
     });
   };
 
+  console.log('home page');
+
   return (
     <div
       className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-slate-900">
@@ -18,11 +20,11 @@ export const HomePage = () => {
       <p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">
         11 Words Remaining
       </p>
-      <LetterGrid />
-      <button onClick={submitScore}
-              className="relative z-20 mt-4 text-white bg-slate-950 px-3 py-1 rounded-md">
-        Submit Score
-      </button>
+      <LetterGridSvg />
+      {/*<button onClick={submitScore}*/}
+      {/*        className="relative z-20 mt-4 text-white bg-slate-950 px-3 py-1 rounded-md">*/}
+      {/*  Submit Score*/}
+      {/*</button>*/}
     </div>
   );
 };
