@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@devvit/public-api": "^0.11.3",
+    "@nanostores/react": "^0.8.2",
     "clsx": "^2.1.1",
-    "motion": "11.11.15",
+    "nanostores": "^0.11.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4",

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { generateBoard } from '../util/boardGen.ts';
 import { Coord } from '../models.ts';
 import { isWordInDict } from '../util/dictionary.ts';
 import { adjustSelection, dropBoxes } from '../util/boxUtil.ts';
+import { $score } from '../stores/game.ts';
 
 let mouseDown = false;
 let lastOver: Coord = { x: -1, y: -1 };
@@ -12,13 +13,13 @@ export const LetterGridSvg = () => {
   const [currentSelection, setCurrentSelection] = useState<Coord[]>([]);
   const [falling, setFalling] = useState<Coord[]>([]);
 
-  const onMouseDown = (e) => {
+  const onMouseDown: MouseEventHandler<SVGElement> = (e) => {
     e.preventDefault();
     mouseDown = true;
     setCurrentSelection([lastOver]);
   };
 
-  const onMouseUp = (e) => {
+  const onMouseUp: MouseEventHandler<SVGElement> = (e) => {
     e.preventDefault();
     mouseDown = false;
 
@@ -27,23 +28,24 @@ export const LetterGridSvg = () => {
       const [newLetters, newFalling] = dropBoxes(letters, currentSelection);
       setLetters(newLetters);
       setFalling(newFalling);
+      const score = currentSelection.length - 2;
+      console.log('Score:', score);
+      $score.set($score.get() + score);
     }
 
     setCurrentSelection([]);
   };
 
-  const onMouseOver = (e, x, y) => {
+  const onMouseOver = (e: Event, x: number, y: number) => {
     e.preventDefault();
     lastOver = { x, y };
     if (!mouseDown) return;
-
-    console.log(adjustSelection(currentSelection, { x, y }));
     setCurrentSelection(adjustSelection(currentSelection, { x, y }));
   };
 
-  const boxColor = (i, j) => {
+  const boxColor = (colNum: number, rowNum: number) => {
     // if (solved[i][j]) return '#034d03';
-    if (currentSelection.some(({ x, y }) => x === i && y === j)) return '#444';
+    if (currentSelection.some(({ x, y }) => x === colNum && y === rowNum)) return '#444';
     // if (filled[i][j]) return '#444';
     return '#222';
   };
@@ -59,15 +61,19 @@ export const LetterGridSvg = () => {
           stroke="#666" strokeWidth="5" fill="none" />
       }
       {
-        letters.map((row, i) => (
+        letters.map((col, colNum) => (
           <>
             {
-              row.map((letter, j) => (
+              col.map((letter, rowNum) => (
                 <>{letter &&
-                  <g className={falling.some(({ x, y }) => x === i && y === j) ? 'fall-1' : ''}>
-                    <rect x={10 + i * 50} y={10 + j * 50} width={40} height={40}
-                          fill={boxColor(i, j)} rx={10} onMouseOver={(e) => onMouseOver(e, i, j)} />
-                    <text x={i * 50 + 30} y={j * 50 + 30} fill="white" textAnchor="middle"
+                  <g className={falling.some(({
+                                                x,
+                                                y,
+                                              }) => x === colNum && y === rowNum) ? 'fall-1' : ''}>
+                    <rect x={10 + colNum * 50} y={10 + rowNum * 50} width={40} height={40}
+                          fill={boxColor(colNum, rowNum)} rx={10}
+                          onMouseOver={(e) => onMouseOver(e, colNum, rowNum)} />
+                    <text x={colNum * 50 + 30} y={rowNum * 50 + 30} fill="white" textAnchor="middle"
                           alignmentBaseline="middle">{letter}</text>
                   </g>} </>
               ))

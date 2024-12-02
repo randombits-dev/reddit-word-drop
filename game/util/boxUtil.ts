@@ -46,19 +46,19 @@ export const adjustSelection = (selectedBoxes: Coord[], point: Coord): Coord[] =
   return selectedBoxes;
 };
 
-export const dropBoxes = (grid: string[][], selectedBoxes: Coord[]): [letters: string[][], falling: Coord[]] => {
+export const dropBoxes = (grid: string[][], selectedBoxes: Coord[]): [string[][], Coord[]] => {
   // makes selected boxes disappear and boxes above them drop down
-  const newGrid = grid.map((row) => row.slice());
+  const newGrid = grid.map((col) => col.slice());
   selectedBoxes.forEach(({ x, y }) => {
     newGrid[x][y] = '';
   });
-  for (let i = 0; i < newGrid.length; i++) {
-    for (let j = 0; j < newGrid[i].length; j++) {
-      if (newGrid[i][j] === '') {
-        for (let k = i; k > 0; k--) {
-          newGrid[i][k] = newGrid[i][k - 1];
+  for (let col = 0; col < newGrid.length; col++) {
+    for (let row = 0; row < newGrid[col].length; row++) {
+      if (newGrid[col][row] === '') {
+        for (let k = row; k > 0; k--) {
+          newGrid[col][k] = newGrid[col][k - 1];
         }
-        newGrid[i][0] = '';
+        newGrid[col][0] = '';
       }
     }
   }
