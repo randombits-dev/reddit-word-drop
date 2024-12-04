@@ -3,7 +3,7 @@ import { Devvit } from '@devvit/public-api';
 
 export const Game: Devvit.BlockComponent<{
   onMessage: Devvit.Blocks.OnWebViewEventHandler
-}> = ({ onMessage }) => {
+}> = ({ onMessage }, context) => {
   return <webview
     id={WEBVIEW_ID}
     url="index.html"

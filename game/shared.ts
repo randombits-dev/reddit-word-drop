@@ -10,11 +10,8 @@ export type WebviewToBlockMessage = { type: 'INIT' } | {
 export type BlocksToWebviewMessage = {
   type: 'INIT_RESPONSE';
   payload: {
-    postId: string;
+    board: string
   };
-} | {
-  type: 'GET_POKEMON_RESPONSE';
-  payload: { number: number; name: string; error?: string };
 };
 
 export type DevvitMessage = {

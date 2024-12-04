@@ -17,7 +17,7 @@ const weights: { [key: string]: number } = {
   , 'N': 0.06749
   , 'O': 0.07507
   , 'P': 0.01929
-  , 'Q': 0.00095
+  , 'Qu': 0.00095
   , 'R': 0.05987
   , 'S': 0.06327
   , 'T': 0.09056
@@ -33,46 +33,30 @@ const accumulatedWeights = Object.values(weights).reduce((acc, weight) => {
   acc.push(acc[acc.length - 1] + weight);
   return acc;
 }, [0]);
+accumulatedWeights.shift();
 
 // const vowels = ['A', 'E', 'I', 'O', 'U'];
 
-export const generateBoard = () => {
-  // for (const [key, weight] of Object.entries(weights)) {
-  //   weights[key] = Math.cbrt(weight);
-  //   if (!vowels.includes(key)) {
-  //     weights[key] = weights[key] / 2;
-  //   }
-  // }
+const getRandomLetter = () => {
+  const random = Math.random();
+  for (let k = 0; k < accumulatedWeights.length; k++) {
+    if (random < accumulatedWeights[k]) {
+      return Object.keys(weights)[k];
+    }
+  }
+};
 
+export const generateBoard = (size: number) => {
   const rows = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < size; i++) {
     const letters = [];
-    for (let j = 0; j < 8; j++) {
-      const random = Math.random();
-      let letter = '';
-      for (let k = 0; k < accumulatedWeights.length; k++) {
-        if (random < accumulatedWeights[k]) {
-          letter = Object.keys(weights)[k];
-          break;
-        }
-      }
-      letters.push(letter);
+    for (let j = 0; j < size; j++) {
+      letters.push(getRandomLetter() || 'Z');
     }
     rows.push(letters);
   }
 
   return rows;
-  // const distribution = makeDistribution(weights);
-  // console.log(distribution);
-  // const letter = randomElement(distribution);
-  // weights[letter] = weights[letter] * 0.6;
-  // if (vowels.includes(letter)) {
-  //   for (const [key, weight] of Object.entries(weights)) {
-  //     if (vowels.includes(key)) {
-  //       weights[key] = weight * 0.8;
-  //     }
-  //   }
-  // }
 };
 
 // TODO: Handle Qu

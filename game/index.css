@@ -6,6 +6,10 @@ body {
   height: 512px;
 }
 
+svg rect, svg text {
+  cursor: default;
+}
+
 @keyframes fall-1 {
   from {
     transform: translateY(0px);

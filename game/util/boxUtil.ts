@@ -62,5 +62,13 @@ export const dropBoxes = (grid: string[][], selectedBoxes: Coord[]): [string[][]
       }
     }
   }
+
+  // if any columns are empty, remove them
+  for (let col = newGrid.length - 1; col > 0; col--) {
+    if (!newGrid[col].some(l => !!l)) {
+      newGrid.splice(col, 1);
+    }
+  }
+
   return [newGrid, []];
 };
