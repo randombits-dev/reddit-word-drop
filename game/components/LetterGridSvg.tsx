@@ -70,6 +70,7 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
     return '#222';
   };
 
+  const letterPadding = letterSize / 5;
   const textLocation = 5 + letterSize / 2;
   return (
     <svg height={410} width={410} onMouseDown={onMouseDown}
@@ -94,8 +95,8 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
                                                 x,
                                                 y,
                                               }) => x === colNum && y === rowNum) ? 'fall-1' : ''}>
-                    <rect x={10 + colNum * letterSize} y={10 + rowNum * letterSize}
-                          width={letterSize - 10} height={letterSize - 10}
+                    <rect x={letterPadding + colNum * letterSize} y={letterPadding + rowNum * letterSize}
+                          width={letterSize - letterPadding} height={letterSize - letterPadding}
                           fill={boxColor(colNum, rowNum)} rx={15}
                           onMouseOver={(e) => onMouseOver(e, colNum, rowNum)} />
                     <text fontFamily="monospace" fontSize={24}
