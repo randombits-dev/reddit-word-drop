@@ -36,10 +36,12 @@ const puzzleForm = Devvit.createForm({
       type: 'select',
       options: [
         { label: '4x4', value: '4' },
+        { label: '5x5', value: '5' },
         { label: '6x6', value: '6' },
+        { label: '7x7', value: '7' },
         { label: '8x8', value: '8' },
       ],
-      defaultValue: ['4'],
+      defaultValue: ['5'],
     },
   ],
   title: 'Create a new puzzle',

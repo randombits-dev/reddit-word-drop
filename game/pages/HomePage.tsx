@@ -4,12 +4,12 @@ import { useStore } from '@nanostores/react';
 import { $score } from '../stores/game.ts';
 import { useDevvitListener } from '../hooks/useDevvitListener.tsx';
 import { useEffect, useState } from 'react';
-import { generateBoard } from "../util/boardGen.ts";
+import { generateBoard } from '../util/boardGen.ts';
 
 
 export const HomePage = () => {
   const score = useStore($score);
-  const [letters, setLetters] = useState<string[][] | null>(generateBoard(4));
+  const [letters, setLetters] = useState<string[][] | null>(generateBoard(8));
 
   const initData = useDevvitListener('INIT_RESPONSE');
   useEffect(() => {
@@ -45,10 +45,10 @@ export const HomePage = () => {
       {letters && <><LetterGridSvg initLetters={letters} />
         <div className="flex items-center mt-4 ">
           <div className="text-neutral-300">{score} points</div>
-        <button onClick={submitScore}
-                className="relative z-20 text-white bg-slate-950 px-3 py-1 rounded-md">
-          Submit Score
-        </button>
+          <button onClick={submitScore}
+                  className="relative z-20 text-white bg-slate-950 px-3 py-1 rounded-md">
+            Submit Score
+          </button>
         </div>
       </>}
     </div>
