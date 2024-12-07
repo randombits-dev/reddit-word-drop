@@ -83,7 +83,7 @@ Devvit.addCustomPostType({
   render: (context) => {
     const [state, setState] = useState(async () => {
       const value = await context.redis.hGet('user_' + context.postId!, context.userId!);
-      return value ? 2 : 0;
+      return value ? 2 : 1;
     });
     const [results, setResults] = useState<any>(async () => {
       return Promise.all([
@@ -113,7 +113,6 @@ Devvit.addCustomPostType({
           const data = event as unknown as WebviewToBlockMessage;
           switch (data.type) {
             case 'INIT':
-              context.ui.showToast({ text: `Send to webview: ${JSON.stringify(results)}` });
               sendMessageToWebview(context, {
                 type: 'INIT_RESPONSE',
                 payload: {

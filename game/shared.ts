@@ -5,7 +5,10 @@ export type Page =
 export type WebviewToBlockMessage = { type: 'INIT' } | {
   type: 'ADD_RESULTS';
   payload: any;
-};
+} | {
+  type: 'SUBMIT_SCORE';
+  payload: any;
+}
 
 export type BlocksToWebviewMessage = {
   type: 'INIT_RESPONSE';

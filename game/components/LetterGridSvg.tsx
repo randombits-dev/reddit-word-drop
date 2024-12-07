@@ -93,15 +93,14 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
             {
               col.map((letter, rowNum) => (
                 <>{letter &&
-                  <g className={falling.some(({
-                                                x,
-                                                y,
-                                              }) => x === colNum && y === rowNum) ? 'fall-1' : ''}>
+                  <g className={falling.some(({ x, y }) =>
+                    x === colNum && y === rowNum) ? 'fall-1' : ''}
+                     onMouseOver={(e) => onMouseOver(e, colNum, rowNum)}>
                     <rect x={colNum * letterSpacing}
                           y={rowNum * letterSpacing}
                           width={letterSize} height={letterSize}
                           fill={boxColor(colNum, rowNum)} rx={15}
-                          onMouseOver={(e) => onMouseOver(e, colNum, rowNum)} />
+                    />
                     <text fontFamily="monospace" fontSize={24}
                           x={colNum * letterSpacing + textLocation}
                           y={rowNum * letterSpacing + textLocation} fill="white"
