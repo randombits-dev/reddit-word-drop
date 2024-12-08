@@ -14,9 +14,9 @@ export const HomePage = () => {
   const initData = useDevvitListener('INIT_RESPONSE');
   useEffect(() => {
     sendToDevvit({ type: 'INIT' });
-    $score.listen((score) => {
-      sendToDevvit({ type: 'SUBMIT_SCORE', payload: { score } });
-    });
+    // $score.listen((score) => {
+    //   sendToDevvit({ type: 'SUBMIT_SCORE', payload: { score } });
+    // });
   }, []);
   useEffect(() => {
     if (initData) {
@@ -38,21 +38,22 @@ export const HomePage = () => {
   console.log('home page');
 
   return (
-    <>
+    <div
+      className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
 
       {/*<h1 className={cn('relative z-20 text-xl text-white md:text-4xl')}>Animals</h1>*/}
-      {/*<p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">*/}
-      {/*  Find any many words as you can, then click "Submit Score"*/}
-      {/*</p>*/}
+      <p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">
+        Find any many words as you can, then click "Submit Score"
+      </p>
       {letters && <><LetterGridSvg initLetters={letters} />
-        {/*<div className="flex items-center mt-4 ">*/}
-        {/*  <div className="text-neutral-300">{score} points</div>*/}
-        {/*  <button onClick={submitScore}*/}
-        {/*          className="relative z-20 text-white bg-slate-950 px-3 py-1 rounded-md">*/}
-        {/*    Submit Score*/}
-        {/*  </button>*/}
-        {/*</div>*/}
+        <div className="flex items-center mt-4 ">
+          <div className="text-neutral-300">{score} points</div>
+          <button onClick={submitScore}
+                  className="relative z-20 text-white bg-slate-950 px-3 py-1 rounded-md">
+            Submit Score
+          </button>
+        </div>
       </>}
-    </>
+    </div>
   );
 };
