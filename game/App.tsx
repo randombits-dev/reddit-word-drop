@@ -1,33 +1,25 @@
 import { Page } from './shared';
-import { PokemonPage } from './pages/PokemonPage';
+import { HelpPage } from './pages/HelpPage.tsx';
 import { HomePage } from './pages/HomePage';
+import { useStore } from '@nanostores/react';
+import { $page } from './stores/game.ts';
 
-const getPage = (page: Page, { postId }: { postId: string }) => {
-  console.log('page', page);
+const getPage = (page: Page) => {
   switch (page) {
     case 'home':
-      return <HomePage postId={postId} />;
-    case 'pokemon':
-      return <PokemonPage />;
+      return <HomePage />;
+    case 'help':
+      return <HelpPage />;
     default:
       throw new Error(`Unknown page: ${page satisfies never}`);
   }
 };
 
 export const App = () => {
-  // const [postId, setPostId] = useState('');
-  // const page = usePage();
-  // const initData = useDevvitListener('INIT_RESPONSE');
-  // useEffect(() => {
-  //   sendToDevvit({ type: 'INIT' });
-  // }, []);
+  const page = useStore($page);
 
-  // useEffect(() => {
-  //   if (initData) {
-  //     setPostId(initData.postId);
-  //   }
-  // }, [initData, setPostId]);
-
-  // return <div className="h-full">{getPage(page, { postId })}</div>;
-  return <HomePage />;
+  return <div>
+    <HomePage />;
+    {page === 'help' && <HelpPage />}
+  </div>;
 };

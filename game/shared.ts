@@ -1,6 +1,6 @@
 export type Page =
   | 'home'
-  | 'pokemon';
+  | 'help';
 
 export type WebviewToBlockMessage = { type: 'INIT' } | {
   type: 'ADD_RESULTS';

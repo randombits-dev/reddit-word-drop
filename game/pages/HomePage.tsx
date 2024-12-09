@@ -1,7 +1,7 @@
 import { sendToDevvit } from '../utils';
 import { LetterGridSvg } from '../components/LetterGridSvg.tsx';
 import { useStore } from '@nanostores/react';
-import { $score } from '../stores/game.ts';
+import { $page, $score } from '../stores/game.ts';
 import { useDevvitListener } from '../hooks/useDevvitListener.tsx';
 import { useEffect, useState } from 'react';
 import { generateBoard } from '../util/boardGen.ts';
@@ -35,22 +35,28 @@ export const HomePage = () => {
     });
   };
 
-  console.log('home page');
-
   return (
     <div
-      className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden">
 
       {/*<h1 className={cn('relative z-20 text-xl text-white md:text-4xl')}>Animals</h1>*/}
-      <p className="relative z-20 mb-4 mt-2 text-center text-neutral-300">
-        Find any many words as you can, then click "Submit Score"
-      </p>
+
       {letters && <><LetterGridSvg initLetters={letters} />
-        <div className="flex items-center mt-4 ">
-          <div className="text-neutral-300">{score} points</div>
+        {/*<p className="relative z-20 mb-2 mt-1 text-center text-neutral-300">*/}
+        {/*  Find as many words as you can, then click "Submit Score"*/}
+        {/*</p>*/}
+        <div className="flex mt-4 items-end gap-5">
+          <div className="flex items-baseline gap-2 text-neutral-300">
+            <div className="text-4xl">{score}</div>
+            <div className="text-md">{score === 1 ? 'point' : 'points'}</div>
+          </div>
           <button onClick={submitScore}
-                  className="relative z-20 text-white bg-slate-950 px-3 py-1 rounded-md">
+                  className="relative z-20 text-white bg-slate-950 px-5 py-2 rounded-xl">
             Submit Score
+          </button>
+          <button onClick={() => $page.set('help')}
+                  className="relative z-20 text-white bg-slate-950 px-5 py-2 rounded-xl">
+            Help
           </button>
         </div>
       </>}
