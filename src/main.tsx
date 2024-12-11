@@ -133,7 +133,7 @@ Devvit.addCustomPostType({
               const parsedAvg = avg ? parseFloat(avg) : 0;
               const parsedNum = num ? parseInt(num) : 0;
               const parsedBest = best ? parseInt(best) : 0;
-              const newAvg = (parsedAvg * parsedNum + newScore) / (parsedNum + 1);
+              const newAvg = Math.round((parsedAvg * parsedNum + newScore) / (parsedNum + 1) * 100) / 100;
               const newNum = parsedNum + 1;
               const newBest = parsedBest > newScore ? parsedBest : newScore;
               redis.hSet('avg_' + context.postId!, {
