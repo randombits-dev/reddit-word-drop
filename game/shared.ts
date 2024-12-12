@@ -1,6 +1,7 @@
 export type Page =
   | 'home'
-  | 'help';
+  | 'help'
+  | 'results';
 
 export type WebviewToBlockMessage = { type: 'INIT' } | {
   type: 'ADD_RESULTS';

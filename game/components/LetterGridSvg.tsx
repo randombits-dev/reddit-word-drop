@@ -2,7 +2,7 @@ import { MouseEventHandler, useState } from 'react';
 import { Coord } from '../models.ts';
 import { isWordInDict } from '../util/dictionary.ts';
 import { adjustSelection, dropBoxes } from '../util/boxUtil.ts';
-import { $score, $sound } from '../stores/game.ts';
+import { $score } from '../stores/game.ts';
 
 let mouseDown = false;
 let lastOver: Coord = { x: -1, y: -1 };
@@ -34,10 +34,7 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
 
     if (isWordInDict(letters, currentSelection)) {
       setStatus(1);
-      if ($sound.get()) {
-        var audio = new Audio('/correct.mp3');
-        audio.play();
-      }
+
       setTimeout(() => {
         const [newLetters, newFalling] = dropBoxes(letters, currentSelection);
         setLetters(newLetters);
@@ -50,10 +47,7 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
       }, 150);
     } else {
       setStatus(2);
-      if ($sound.get()) {
-        var audio = new Audio('/error.mp3');
-        audio.play();
-      }
+
       setTimeout(() => {
         setStatus(0);
         setCurrentSelection([]);
@@ -81,13 +75,13 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
     if (currentSelection.some(({ x, y }) => x === colNum && y === rowNum)) {
       if (status === 2) return '#b25353';
       if (status === 1) return '#499649';
-      return '#555';
+      return '#ccc';
     }
     // if (filled[i][j]) return '#444';
-    return '#333';
+    return 'transparent';
   };
 
-  let lineColor = '#555';
+  let lineColor = '#ccc';
   if (status === 2) {
     lineColor = '#b25353';
   } else if (status === 1) {
@@ -110,27 +104,8 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
   return (
     <div className="" onMouseEnter={onMouseEnter}>
       <svg height={CONTAINER_SIZE} width={CONTAINER_SIZE} onMouseDown={onMouseDown}
-           onMouseUp={onMouseUp} fontFamily="monospace" fontSize={28} fontWeight="600">
+           onMouseUp={onMouseUp} fontFamily="Comic Helvetic" fontSize={28} fontWeight="600">
 
-        {/*<clipPath id="boxClip">*/}
-        {/*  {*/}
-        {/*    letters.map((col, colNum) => (*/}
-        {/*      <>*/}
-        {/*        {*/}
-        {/*          col.map((letter, rowNum) => (*/}
-        {/*            <>{letter &&*/}
-        {/*              <rect x={colNum * letterSpacingRect}*/}
-        {/*                    y={rowNum * letterSpacingRect}*/}
-
-        {/*                    width={letterSizeRect} height={letterSizeRect} rx={4}*/}
-        {/*              />*/}
-        {/*            } </>*/}
-        {/*          ))*/}
-        {/*        }*/}
-        {/*      </>*/}
-        {/*    ))*/}
-        {/*  }*/}
-        {/*</clipPath>*/}
 
         {
           currentSelection.length > 0 &&
@@ -140,9 +115,6 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
             stroke={lineColor} strokeWidth="10" fill="none" />
         }
 
-        {/*<image href={backImg} x={0} y={0} width={400} height={400} clipPath="url(#boxClip)" />*/}
-
-        {/*<rect x={0} y={0} width={410} height={410} fill="black" />*/}
 
         {
           letters.map((col, colNum) => (
@@ -153,15 +125,19 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
                     <g className={falling.some(({ x, y }) =>
                       x === colNum && y === rowNum) ? 'fall-1' : ''}
                     >
+
                       <rect x={colNum * letterSpacingRect}
                             y={rowNum * letterSpacingRect}
 
                             width={letterSizeRect} height={letterSizeRect}
                             fill={boxColor(colNum, rowNum)} rx={4}
                       />
+                      <image href={`/img/chalk-border-2.png`} x={colNum * letterSpacingRect}
+                             y={rowNum * letterSpacingRect} width={letterSizeRect}
+                             height={letterSizeRect} />
                       <text
                         x={colNum * letterSpacingRect + textLocation}
-                        y={rowNum * letterSpacingRect + textLocation} fill="white"
+                        y={rowNum * letterSpacingRect + textLocation} fill="black"
                         textAnchor="middle"
                         alignmentBaseline="central">{letter}</text>
                       <rect x={colNum * letterSpacingBox}

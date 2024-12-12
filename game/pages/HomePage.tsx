@@ -1,14 +1,15 @@
 import { sendToDevvit } from '../utils';
 import { LetterGridSvg } from '../components/LetterGridSvg.tsx';
 import { useStore } from '@nanostores/react';
-import { $page, $score, $sound } from '../stores/game.ts';
+import { $page, $score } from '../stores/game.ts';
 import { useDevvitListener } from '../hooks/useDevvitListener.tsx';
 import { useEffect, useState } from 'react';
+import { generateBoard } from '../util/boardGen.ts';
 
 export const HomePage = () => {
   const score = useStore($score);
-  const sound = useStore($sound);
-  const [letters, setLetters] = useState<string[][] | null>();
+  // const sound = useStore($sound);
+  const [letters, setLetters] = useState<string[][] | null>(generateBoard(6));
 
   const initData = useDevvitListener('INIT_RESPONSE');
   useEffect(() => {

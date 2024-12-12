@@ -38,15 +38,15 @@ export const Results: Devvit.BlockComponent<{ results: any, onLaunch: () => void
       printHighlight()
     }
     {results.userBest &&
-      <hstack gap="large" alignment="center">
+      <Card title="My stats">
         {results.score && <Stat title="Your Score" value={results.score} />}
         <Stat title="Your Best" value={results.userBest} />
-      </hstack>
+      </Card>
     }
-    <hstack gap="large">
+    <Card title="Global">
       <Stat title="Global Average" value={results.avg} />
       <Stat title="Global Best" value={results.best} />
-    </hstack>
+    </Card>
     <button size="large"
             onPress={() => {
               onLaunch();
