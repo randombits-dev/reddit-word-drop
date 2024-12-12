@@ -4,12 +4,12 @@ import { useStore } from '@nanostores/react';
 import { $page, $score } from '../stores/game.ts';
 import { useDevvitListener } from '../hooks/useDevvitListener.tsx';
 import { useEffect, useState } from 'react';
-import { generateBoard } from '../util/boardGen.ts';
+import { generateCatBoard } from '../util/boardGen.ts';
 
 export const HomePage = () => {
   const score = useStore($score);
   // const sound = useStore($sound);
-  const [letters, setLetters] = useState<string[][] | null>(generateBoard(6));
+  const [letters, setLetters] = useState<string[][] | null>(generateCatBoard(8, ['COMPUTER']));
 
   const initData = useDevvitListener('INIT_RESPONSE');
   useEffect(() => {
@@ -51,11 +51,11 @@ export const HomePage = () => {
             <div className="text-md">{score === 1 ? 'point' : 'points'}</div>
           </div>
           <button onClick={submitScore}
-                  className="relative z-20 text-white bg-slate-950 px-3 py-2 rounded-xl">
+                  className="relative z-20 text-black border-2 font-bold border-neutral-900 font-['Comic_Helvetic'] px-3 py-2">
             Submit Score
           </button>
           <button onClick={() => $page.set('help')}
-                  className="relative z-20 text-white bg-slate-950 px-3 py-2 rounded-xl">
+                  className="relative z-20 text-black border-2 font-bold border-neutral-900 font-['Comic_Helvetic'] px-3 py-2">
             Help
           </button>
           {/*<button onClick={() => $sound.set(!$sound.get())}*/}

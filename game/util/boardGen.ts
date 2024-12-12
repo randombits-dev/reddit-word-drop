@@ -46,6 +46,54 @@ const getRandomLetter = () => {
   }
 };
 
+const getRandomPositionNextTo = (x: number, y: number, size: number, letters: string[][]) => {
+  const random = Math.random();
+  const options = [];
+  const addOption = (x: number, y: number) => {
+    if (letters[y][x] === '') {
+      options.push({ x, y });
+    }
+  };
+
+  if (x > 0) addOption(x - 1, y);
+  if (x < size - 1) addOption(x + 1, y);
+  if (y > 0) addOption(x, y - 1);
+  if (y < size - 1) addOption(x, y + 1);
+  return options[Math.floor(random * options.length)];
+};
+
+export const generateCatBoard = (size: number, words: string[]) => {
+  const letters: string[][] = generateEmptyBoard(size);
+  words.forEach((word, wordIndex) => {
+    let lastPos = { x: -1, y: -1 };
+    word.split('').forEach((letter, letterIndex) => {
+      if (letterIndex === 0) {
+        const startCol = Math.floor(Math.random() * size);
+        const startRow = size - 1;
+        letters[startRow][startCol] = letter;
+        lastPos = { x: startCol, y: startRow };
+      } else {
+        const newPos = getRandomPositionNextTo(lastPos.x, lastPos.y, size, letters);
+        letters[newPos.y][newPos.x] = letter;
+        lastPos = newPos;
+      }
+    });
+  });
+  return letters;
+};
+
+export const generateEmptyBoard = (size: number) => {
+  const rows = [];
+  for (let i = 0; i < size; i++) {
+    const letters = [];
+    for (let j = 0; j < size; j++) {
+      letters.push('');
+    }
+    rows.push(letters);
+  }
+  return rows;
+};
+
 export const generateBoard = (size: number) => {
   const rows = [];
   for (let i = 0; i < size; i++) {
@@ -58,17 +106,3 @@ export const generateBoard = (size: number) => {
 
   return rows;
 };
-
-// TODO: Handle Qu
-
-// function makeDistribution(weights: { [key: string]: number }) {
-//   const distribution = [];
-//   for (const [key, weight] of Object.entries(weights)) {
-//     const resolution = 10;
-//     const frequency = Math.floor(weight * resolution);
-//     for (let i = 0; i < frequency; i++) {
-//       distribution.push(key);
-//     }
-//   }
-//   return distribution;
-// }
