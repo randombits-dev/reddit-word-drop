@@ -16,7 +16,10 @@ export type BlocksToWebviewMessage = {
   payload: {
     board: string
   };
-};
+} | {
+  type: 'SCORE_RESPONSE';
+  payload: any;
+}
 
 export type DevvitMessage = {
   type: 'devvit-message';

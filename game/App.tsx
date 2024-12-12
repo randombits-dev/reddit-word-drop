@@ -2,7 +2,7 @@ import { Page } from './shared';
 import { HelpPage } from './pages/HelpPage.tsx';
 import { HomePage } from './pages/HomePage';
 import { useStore } from '@nanostores/react';
-import { $page } from './stores/game.ts';
+import { $page, $results } from './stores/game.ts';
 import { ResultsPage } from './pages/ResultsPage.tsx';
 
 const getPage = (page: Page) => {
@@ -20,9 +20,10 @@ const getPage = (page: Page) => {
 
 export const App = () => {
   const page = useStore($page);
+  const results = useStore($results);
 
   return <div>
-    <HomePage />;
+    {results ? <ResultsPage results={results} /> : <HomePage />}
     {page === 'help' && <HelpPage />}
   </div>;
 };

@@ -4,3 +4,4 @@ import { Page } from '../shared.ts';
 export const $score = atom(0);
 export const $page = atom<Page>('home');
 export const $sound = atom<boolean>(true);
+export const $results = atom<any>(null);

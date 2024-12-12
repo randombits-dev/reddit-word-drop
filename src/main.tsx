@@ -146,31 +146,46 @@ Devvit.addCustomPostType({
                 usersBest = newScore;
                 redis.hSet('user_' + context.postId!, { [userId!]: String(newScore) });
               }
-              setState(2);
-              setResults({
-                ...results,
-                avg: newAvg,
-                num: newNum,
-                best: newBest,
-                userBest: usersBest,
-                score: newScore,
+
+              sendMessageToWebview(context, {
+                type: 'SCORE_RESPONSE',
+                payload: {
+                  ...results,
+                  avg: newAvg,
+                  num: newNum,
+                  best: newBest,
+                  userBest: usersBest,
+                  score: newScore,
+                },
               });
 
-              if (comment && newBest > parsedBest) {
-                context.reddit.getCommentById(comment).then(c => {
-                  void c.edit({
-                    text: 'The best score is now ' + newBest,
-                  });
-                });
+              // setState(2);
+              // setResults({
+              //   ...results,
+              //   avg: newAvg,
+              //   num: newNum,
+              //   best: newBest,
+              //   userBest: usersBest,
+              //   score: newScore,
+              // });
 
-              } else {
-                context.reddit.submitComment({
-                  id: context.postId!,
-                  text: 'The best score is now ' + newBest,
-                }).then(c => {
-                  context.redis.hSet('avg_' + context.postId!, { comment: c.id });
-                });
-              }
+              // if (newBest > parsedBest) {
+              //   if (comment) {
+              //     context.reddit.getCommentById(comment).then(c => {
+              //       void c.edit({
+              //         text: 'The best score is now ' + newBest,
+              //       });
+              //     });
+              //
+              //   } else {
+              //     context.reddit.submitComment({
+              //       id: context.postId!,
+              //       text: 'The best score is now ' + newBest,
+              //     }).then(c => {
+              //       context.redis.hSet('avg_' + context.postId!, { comment: c.id });
+              //     });
+              //   }
+              // }
 
 
               break;

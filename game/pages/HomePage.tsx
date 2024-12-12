@@ -1,17 +1,18 @@
 import { sendToDevvit } from '../utils';
 import { LetterGridSvg } from '../components/LetterGridSvg.tsx';
 import { useStore } from '@nanostores/react';
-import { $page, $score } from '../stores/game.ts';
+import { $page, $results, $score } from '../stores/game.ts';
 import { useDevvitListener } from '../hooks/useDevvitListener.tsx';
 import { useEffect, useState } from 'react';
-import { generateCatBoard } from '../util/boardGen.ts';
+import { generateBoard } from '../util/boardGen.ts';
 
 export const HomePage = () => {
   const score = useStore($score);
   // const sound = useStore($sound);
-  const [letters, setLetters] = useState<string[][] | null>(generateCatBoard(8, ['COMPUTER']));
+  const [letters, setLetters] = useState<string[][] | null>(generateBoard(6));
 
   const initData = useDevvitListener('INIT_RESPONSE');
+  const scoreResponse = useDevvitListener('SCORE_RESPONSE');
   useEffect(() => {
     sendToDevvit({ type: 'INIT' });
     // $score.listen((score) => {
@@ -26,13 +27,34 @@ export const HomePage = () => {
     }
   }, [initData]);
 
+  useEffect(() => {
+    if (scoreResponse) {
+      $page.set('results');
+    }
+  }, [scoreResponse]);
+
   const submitScore = () => {
-    sendToDevvit({
-      type: 'ADD_RESULTS',
-      payload: {
-        score: $score.get(),
-      },
+    // sendToDevvit({
+    //   type: 'ADD_RESULTS',
+    //   payload: {
+    //     score: $score.get(),
+    //   },
+    // });
+    $results.set({
+      avg: 8.23,
+      num: 110,
+      best: 19,
+      userBest: 11,
+      score: 11,
+      top: [
+        { user: 'user1', score: 19 },
+        { user: 'user2', score: 18 },
+        { user: 'user3', score: 17 },
+        { user: 'user4', score: 16 },
+        { user: 'user5', score: 15 },
+      ],
     });
+    $page.set('results');
   };
 
   return (
