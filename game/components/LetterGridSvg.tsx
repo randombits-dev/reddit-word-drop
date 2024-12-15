@@ -3,18 +3,13 @@ import { Coord } from '../models.ts';
 import { isWordInDict } from '../util/dictionary.ts';
 import { adjustSelection, dropBoxes } from '../util/boxUtil.ts';
 import { $score } from '../stores/game.ts';
+import chalkBorder from '../img/chalk-border-2.png';
 
 let mouseDown = false;
 let lastOver: Coord = { x: -1, y: -1 };
 const CONTAINER_SIZE = 400;
 export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
-
-
   const [letters, setLetters] = useState<string[][]>(initLetters);
-
-  // const letterSize = useMemo(() => {
-  //   return Math.floor(CONTAINER_SIZE / initLetters.length - initLetters.length * );
-  // }, []);
 
   const [currentSelection, setCurrentSelection] = useState<Coord[]>([]);
   const [falling, setFalling] = useState<Coord[]>([]);
@@ -40,7 +35,6 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
         setLetters(newLetters);
         setFalling(newFalling);
         const score = currentSelection.length - 2;
-        console.log('Score:', score);
         $score.set($score.get() + score);
         setCurrentSelection([]);
         setStatus(0);
@@ -73,8 +67,8 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
   const boxColor = (colNum: number, rowNum: number) => {
     // if (solved[i][j]) return '#034d03';
     if (currentSelection.some(({ x, y }) => x === colNum && y === rowNum)) {
-      if (status === 2) return '#b25353';
-      if (status === 1) return '#499649';
+      if (status === 2) return '#B8646B';
+      if (status === 1) return '#57B866';
       return '#ccc';
     }
     // if (filled[i][j]) return '#444';
@@ -83,9 +77,9 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
 
   let lineColor = '#ccc';
   if (status === 2) {
-    lineColor = '#b25353';
+    lineColor = '#B8646B';
   } else if (status === 1) {
-    lineColor = '#499649';
+    lineColor = '#57B866';
   }
 
 
@@ -132,7 +126,7 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
                             width={letterSizeRect} height={letterSizeRect}
                             fill={boxColor(colNum, rowNum)} rx={4}
                       />
-                      <image href={`/img/chalk-border-2.png`} x={colNum * letterSpacingRect}
+                      <image href={chalkBorder} x={colNum * letterSpacingRect}
                              y={rowNum * letterSpacingRect} width={letterSizeRect}
                              height={letterSizeRect} />
                       <text

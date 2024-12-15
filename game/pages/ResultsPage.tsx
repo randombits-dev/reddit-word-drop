@@ -1,4 +1,4 @@
-import { $results } from '../stores/game.ts';
+import { $page } from '../stores/game.ts';
 
 export const ResultsPage = ({ results }) => {
   // const [results, setResults] = useState<any>({});
@@ -15,7 +15,7 @@ export const ResultsPage = ({ results }) => {
   };
 
   const newGame = () => {
-    $results.set(null);
+    $page.set('home');
   };
 
   const Stat = ({ title, value }: any) => {
@@ -34,11 +34,11 @@ export const ResultsPage = ({ results }) => {
     </div>;
   };
 
-  const BoardCard = ({ item: { i, user, score } }) => {
+  const BoardCard = ({ item: { i, member, score } }) => {
     return <div
       className="flex items-center gap-3 border-2 border-neutral-700 rounded-lg my-1 px-3">
-      <div>{i + 1}.</div>
-      <div className="flex-grow min-w-40">{user}</div>
+      <div>#{i}</div>
+      <div className="flex-grow min-w-40">{member}</div>
       <div className="text-xl">{score}</div>
     </div>;
   };
@@ -46,7 +46,7 @@ export const ResultsPage = ({ results }) => {
   const Board = ({ items }) => {
     return <div className="font-['Comic Helvetic']">
       {items.map(((item, i) => {
-        return <BoardCard key={i} item={{ i, ...item }} />;
+        return <BoardCard key={i} item={{ i: i + 1, ...item }} />;
       }))
       }
     </div>;
@@ -63,21 +63,36 @@ export const ResultsPage = ({ results }) => {
     {/*    <Stat title="Your Best" value={results.userBest} />*/}
     {/*  </Card>*/}
     {/*}*/}
-    <div className="font-bold text-lg">My Rank</div>
-    <BoardCard item={{ i: -1, user: 'You', score: results.score }} />
-    <div className="font-bold text-lg mt-5">Leaderboard</div>
-    <Board items={results.top} />
+
+    {/*<div className="font-bold text-lg">My Stats</div>*/}
+
+    {
+      results.score && <>
+        <div className="font-bold text-lg">My Rank</div>
+        <BoardCard
+          item={{ i: results.rank, member: results.username, score: results.score }} />
+      </>
+    }
+
+    {
+      results.top.length > 0 && <>
+        <div className="font-bold text-lg mt-5">Leaderboard</div>
+        {/*<div>Top 5 of {results.num} players</div>*/}
+        <Board items={results.top} />
+      </>
+    }
+
 
     {/*<div className="font-bold text-lg">Stats</div>*/}
 
-    <div className="flex gap-10 text-center mt-5">
-      <Stat title="Average" value={results.avg} />
-      <Stat title="Players" value={results.num} />
-    </div>
+    {/*<div className="flex gap-10 text-center mt-5">*/}
+    {/*  <Stat title="Average Score" value={results.avg} />*/}
+    {/*  <Stat title="Total Players" value={results.num} />*/}
+    {/*</div>*/}
     <button
       onClick={newGame} className="mt-5 border-2 border-neutral-700 px-4 py-2 rounded-lg"
     >
-      Try Again
+      {results.score ? 'Play Again' : 'Start Game'}
     </button>
   </div>;
 };
