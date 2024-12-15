@@ -1,45 +1,18 @@
 import { $page } from '../stores/game.ts';
+import { MainButton } from '../components/MainButton.tsx';
 
 export const ResultsPage = ({ results }) => {
-  // const [results, setResults] = useState<any>({});
-
-  const printHighlight = () => {
-    if (results.score >= results.best) {
-      return <text className="">New High Score!</text>;
-    } else if (results.score >= results.avg) {
-      return <text className="">You beat the average!</text>;
-    } else if (results.score) {
-      return <text className="">Good Job!</text>;
-    }
-    return <text className=""></text>;
-  };
 
   const newGame = () => {
     $page.set('home');
   };
 
-  const Stat = ({ title, value }: any) => {
-    return <div className="">
-      <div className="">{title}</div>
-      <div className="text-xl">{value}</div>
-    </div>;
-  };
-
-  const Card = ({ title, children }: any) => {
-    return <div>
-      <text className="">{title}</text>
-      <div className="flex">
-        {children}
-      </div>
-    </div>;
-  };
-
   const BoardCard = ({ item: { i, member, score } }) => {
     return <div
-      className="flex items-center gap-3 border-2 border-neutral-700 rounded-lg my-1 px-3">
-      <div>#{i}</div>
-      <div className="flex-grow min-w-40">{member}</div>
-      <div className="text-xl">{score}</div>
+      className="flex items-center gap-3 border-2 border-neutral-700 rounded-lg my-1 px-3 pt-1">
+      <div className="w-12">#{i}</div>
+      <div className="w-40 flex-grow">{member}</div>
+      <div className="w-8 text-right text-xl">{score}</div>
     </div>;
   };
 
@@ -54,17 +27,6 @@ export const ResultsPage = ({ results }) => {
 
   return <div
     className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden font-['Comic_Helvetic']`}>
-    {/*{*/}
-    {/*  printHighlight()*/}
-    {/*}*/}
-    {/*{results.userBest &&*/}
-    {/*  <Card title="My stats">*/}
-    {/*    {results.score && <Stat title="Your Score" value={results.score} />}*/}
-    {/*    <Stat title="Your Best" value={results.userBest} />*/}
-    {/*  </Card>*/}
-    {/*}*/}
-
-    {/*<div className="font-bold text-lg">My Stats</div>*/}
 
     {
       results.score && <>
@@ -89,10 +51,12 @@ export const ResultsPage = ({ results }) => {
     {/*  <Stat title="Average Score" value={results.avg} />*/}
     {/*  <Stat title="Total Players" value={results.num} />*/}
     {/*</div>*/}
-    <button
-      onClick={newGame} className="mt-5 border-2 border-neutral-700 px-4 py-2 rounded-lg"
-    >
-      {results.score ? 'Play Again' : 'Start Game'}
-    </button>
+    <div className="mt-5">
+      <MainButton
+        onClick={newGame}
+      >
+        {results.score ? 'Play Again' : 'Start Game'}
+      </MainButton>
+    </div>
   </div>;
 };

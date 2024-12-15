@@ -131,7 +131,7 @@ export const LetterGridSvg = ({ initLetters }: { initLetters: string[][] }) => {
                              height={letterSizeRect} />
                       <text
                         x={colNum * letterSpacingRect + textLocation}
-                        y={rowNum * letterSpacingRect + textLocation} fill="black"
+                        y={rowNum * letterSpacingRect + textLocation + 2} fill="black"
                         textAnchor="middle"
                         alignmentBaseline="central">{letter}</text>
                       <rect x={colNum * letterSpacingBox}

@@ -109,6 +109,7 @@ Devvit.addCustomPostType({
         case 'ADD_RESULTS':
           const redis = ctx.redis;
           const newScore = data.payload.score;
+
           await redis.zAdd(ctx.postId!, { member: username!, score: newScore });
 
           const [num, rank, top] = await Promise.all([

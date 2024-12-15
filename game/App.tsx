@@ -6,24 +6,12 @@ import { ResultsPage } from './pages/ResultsPage.tsx';
 import { useDevvitListener } from './hooks/useDevvitListener.tsx';
 import { useEffect } from 'react';
 import { sendToDevvit } from './utils.ts';
-
-// const getPage = (page: Page) => {
-//   switch (page) {
-//     case 'home':
-//       return <HomePage />;
-//     case 'help':
-//       return <HelpPage />;
-//     case 'results':
-//       return <ResultsPage />;
-//     default:
-//       throw new Error(`Unknown page: ${page satisfies never}`);
-//   }
-// };
+import { LoadingPage } from './pages/LoadingPage.tsx';
 
 export const App = () => {
   const page = useStore($page);
 
-  const initData = useDevvitListener('INIT_RESPONSE');
+  let initData = useDevvitListener('INIT_RESPONSE');
 
   useEffect(() => {
     sendToDevvit({ type: 'INIT' });
@@ -43,7 +31,7 @@ export const App = () => {
       {page === 'help' && <HelpPage />}
     </div>;
   } else {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
 };
