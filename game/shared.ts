@@ -11,10 +11,7 @@ export type WebviewToBlockMessage = { type: 'INIT' } | {
 export type BlocksToWebviewMessage = {
   type: 'INIT_RESPONSE';
   payload: any;
-} | {
-  type: 'SCORE_RESPONSE';
-  payload: any;
-}
+};
 
 export type DevvitMessage = {
   type: 'devvit-message';

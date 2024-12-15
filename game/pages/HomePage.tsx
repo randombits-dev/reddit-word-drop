@@ -10,29 +10,6 @@ interface Props {
 
 export const HomePage = ({ letters }: Props) => {
   const score = useStore($score);
-  // const sound = useStore($sound);
-  // const [letters, setLetters] = useState<string[][] | null>(generateBoard(6));
-
-
-  // useEffect(() => {
-  //   sendToDevvit({ type: 'INIT' });
-  //   // $score.listen((score) => {
-  //   //   sendToDevvit({ type: 'SUBMIT_SCORE', payload: { score } });
-  //   // });
-  // }, []);
-  // useEffect(() => {
-  //   if (initData) {
-  //     console.log('initData', initData);
-  //     const board = JSON.parse(initData.board);
-  //     setLetters(board);
-  //   }
-  // }, [initData]);
-
-  // useEffect(() => {
-  //   if (scoreResponse) {
-  //     $page.set('results');
-  //   }
-  // }, [scoreResponse]);
 
   const submitScore = () => {
     sendToDevvit({
@@ -62,12 +39,8 @@ export const HomePage = ({ letters }: Props) => {
     <div
       className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden font-['Comic_Helvetic']`}>
 
-      {/*<h1 className={cn('relative z-20 text-xl text-white md:text-4xl')}>Animals</h1>*/}
-
       {letters && <><LetterGridSvg initLetters={letters} />
-        {/*<p className="relative z-20 mb-2 mt-1 text-center text-neutral-300">*/}
-        {/*  Find as many words as you can, then click "Submit Score"*/}
-        {/*</p>*/}
+
         <div className="flex w-[400px] mt-4 items-end gap-5">
           <div className="flex flex-grow items-baseline gap-2 text-neutral-900">
             <div className="text-4xl">{score}</div>
@@ -79,10 +52,6 @@ export const HomePage = ({ letters }: Props) => {
           <MainButton onClick={() => $page.set('help')}>
             Help
           </MainButton>
-          {/*<button onClick={() => $sound.set(!$sound.get())}*/}
-          {/*        className="relative z-20 text-white bg-slate-950 px-3 py-2 rounded-xl">*/}
-          {/*  {sound ? <SpeakerOn /> : <SpeakerOff />}*/}
-          {/*</button>*/}
         </div>
       </>}
     </div>

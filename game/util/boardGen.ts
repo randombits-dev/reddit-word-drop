@@ -1,5 +1,3 @@
-const tilecount = 16;
-
 const weights: { [key: string]: number } = {
   'A': 0.08167
   , 'B': 0.01492
