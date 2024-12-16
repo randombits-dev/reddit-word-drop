@@ -51,6 +51,89 @@ const puzzleForm = Devvit.createForm({
   ui.navigateTo(post.url);
 });
 
+const automationForm = Devvit.createForm((data) => ({
+  fields: [
+    {
+      name: 'enabled',
+      label: 'Enabled',
+      type: 'boolean',
+      defaultValue: data.enabled || false,
+    },
+    {
+      name: 'timeOfDay',
+      label: 'Time of Day',
+      type: 'select',
+      defaultValue: data.timeOfDay || ['0'],
+      options: [
+        { label: '00:00', value: '0' },
+        { label: '01:00', value: '1' },
+        { label: '02:00', value: '2' },
+        { label: '03:00', value: '3' },
+        { label: '04:00', value: '4' },
+        { label: '05:00', value: '5' },
+        { label: '06:00', value: '6' },
+        { label: '07:00', value: '7' },
+        { label: '08:00', value: '8' },
+        { label: '09:00', value: '9' },
+        { label: '10:00', value: '10' },
+        { label: '11:00', value: '11' },
+        { label: '12:00', value: '12' },
+        { label: '13:00', value: '13' },
+        { label: '14:00', value: '14' },
+        { label: '15:00', value: '15' },
+        { label: '16:00', value: '16' },
+        { label: '17:00', value: '17' },
+        { label: '18:00', value: '18' },
+        { label: '19:00', value: '19' },
+        { label: '20:00', value: '20' },
+        { label: '21:00', value: '21' },
+        { label: '22:00', value: '22' },
+        { label: '23:00', value: '23' },
+      ],
+    },
+    {
+      name: 'sizes',
+      label: 'Grid Sizes',
+      helpText: 'You can select more than one size to create multiple puzzles',
+      type: 'select',
+      defaultValue: data.sizes || ['5'],
+      options: [
+        { label: '4x4', value: '4' },
+        { label: '5x5', value: '5' },
+        { label: '6x6', value: '6' },
+        { label: '7x7', value: '7' },
+        { label: '8x8', value: '8' },
+      ],
+      multiSelect: true,
+    },
+  ],
+  title: 'Manage Word Drop Automation',
+  acceptLabel: 'Save',
+}), async (event, context) => {
+  console.log('saving ', event.values);
+  context.redis.hSet('automation', {
+    enabled: String(event.values.enabled),
+    timeOfDay: JSON.stringify(event.values.timeOfDay),
+    sizes: JSON.stringify(event.values.sizes),
+  });
+  let jobId = await context.redis.get('jobId');
+  if (jobId) {
+    await context.scheduler.cancelJob(jobId);
+    context.redis.del('jobId');
+  }
+  if (event.values.enabled) {
+    jobId = await context.scheduler.runJob({
+      name: 'word-drop-auto',
+      cron: `0 ${event.values.timeOfDay[0]} * * *`,
+      data: {
+        sizes: event.values.sizes,
+      },
+    });
+    context.redis.set('jobId', jobId);
+  }
+  context.ui.showToast('Saved automation settings');
+});
+
 Devvit.addMenuItem({
   // Please update as you work on your idea!
   label: 'Create new Word Drop',
@@ -64,35 +147,38 @@ Devvit.addMenuItem({
 Devvit.addSchedulerJob({
   name: 'word-drop-auto',
   onRun: async (event, context) => {
+    const sizes = event.data!.sizes as string[];
     const subreddit = await context.reddit.getCurrentSubreddit();
     const date = new Date().toLocaleDateString();
-    const post = await context.reddit.submitPost({
-      // Title of the post. You'll want to update!
-      title: `Word Drop - ${date} - 5x5`,
-      subredditName: subreddit.name,
-      preview: <Preview />,
+    sizes.forEach(async (size: string) => {
+      const post = await context.reddit.submitPost({
+        // Title of the post. You'll want to update!
+        title: `Word Drop - ${date} - ${size}x${size}`,
+        subredditName: subreddit.name,
+        preview: <Preview />,
+      });
+      void context.redis.hSet('board_' + post.id, { board: JSON.stringify(generateBoard(Number(size))) });
     });
-    void context.redis.hSet('board_' + post.id, { board: JSON.stringify(generateBoard(5)) });
   },
 });
 
 Devvit.addMenuItem({
-  label: 'Toggle daily Word Drop creation',
+  label: 'Manage Word Drop Automation',
   location: 'subreddit',
   forUserType: 'moderator',
   onPress: async (event, context) => {
-    let jobId = await context.redis.get('jobId');
-    if (jobId) {
-      await context.scheduler.cancelJob(jobId);
-      context.redis.del('jobId');
-      context.ui.showToast('Disabled creating daily puzzles');
+    const data = await context.redis.hGetAll('automation');
+    console.log('get form data ', data);
+    if (data && data.timeOfDay) {
+      const parsed = {
+        enabled: data.enabled === 'true',
+        timeOfDay: JSON.parse(data.timeOfDay),
+        sizes: JSON.parse(data.sizes),
+      };
+      console.log('parsed ', parsed);
+      context.ui.showForm(automationForm, parsed);
     } else {
-      jobId = await context.scheduler.runJob({
-        name: 'word-drop-auto',
-        cron: '0 3 * * *',
-      });
-      context.redis.set('jobId', jobId);
-      context.ui.showToast('Enabled creating daily puzzles');
+      context.ui.showForm(automationForm);
     }
   },
 });
