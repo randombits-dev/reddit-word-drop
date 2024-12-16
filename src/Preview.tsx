@@ -5,17 +5,13 @@ export const Preview: Devvit.BlockComponent<{ text?: string }> = ({ text = 'Load
     <zstack width={'100%'} height={'100%'} alignment="center middle">
       <vstack width={'100%'} height={'100%'} alignment="center middle">
         <image
-          url="loading.gif"
+          url="logo.gif"
           description="Loading..."
-          height={'140px'}
-          width={'140px'}
-          imageHeight={'240px'}
-          imageWidth={'240px'}
+          height={'100px'}
+          width={'100px'}
+          imageHeight={'250px'}
+          imageWidth={'250px'}
         />
-        <spacer size="small" />
-        <text maxWidth={`80%`} size="large" weight="bold" alignment="center middle" wrap>
-          {text}
-        </text>
       </vstack>
     </zstack>
   );

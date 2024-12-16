@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BlocksToWebviewMessage, DevvitMessage } from '../shared';
+import { generateBoard } from '../util/boardGen.ts';
 
 /**
  * Triggers re-renders when a message is received from the Devvit webview.
@@ -34,22 +35,9 @@ import { BlocksToWebviewMessage, DevvitMessage } from '../shared';
  */
 export const useDevvitListener = <T extends BlocksToWebviewMessage['type']>(eventType: T) => {
   type Event = Extract<BlocksToWebviewMessage, { type: T }>;
-  // const [data, setData] = useState<Event['payload'] | undefined>({
-  //   board: generateBoard(6),
-  //   num: 110,
-  //   rank: 345,
-  //   score: 11,
-  //   username: 'user233',
-  //   top: [
-  //     { member: 'user1', score: 19 },
-  //     { member: 'user2', score: 18 },
-  //     { member: 'user3', score: 17 },
-  //     { member: 'user4', score: 16 },
-  //     { member: 'user5', score: 15 },
-  //   ],
-  // });
 
   const [data, setData] = useState<Event['payload'] | undefined>();
+
 
   useEffect(() => {
     const messageHandler = (ev: MessageEvent<DevvitMessage>) => {
@@ -63,6 +51,23 @@ export const useDevvitListener = <T extends BlocksToWebviewMessage['type']>(even
         setData(message.payload as any);
       }
     };
+
+    setTimeout(() => {
+      setData({
+        board: generateBoard(4),
+        num: 110,
+        rank: 345,
+        score: 11,
+        username: 'user233',
+        top: [
+          { member: 'user1', score: 19 },
+          { member: 'user2', score: 18 },
+          { member: 'user3', score: 17 },
+          { member: 'user4', score: 16 },
+          { member: 'user5', score: 15 },
+        ],
+      });
+    }, 5000);
 
     window.addEventListener('message', messageHandler);
     return () => window.removeEventListener('message', messageHandler);
