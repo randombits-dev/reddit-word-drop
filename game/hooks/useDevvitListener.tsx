@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BlocksToWebviewMessage, DevvitMessage } from '../shared';
-import { generateBoard } from '../util/boardGen.ts';
 
 /**
  * Triggers re-renders when a message is received from the Devvit webview.
@@ -52,22 +51,22 @@ export const useDevvitListener = <T extends BlocksToWebviewMessage['type']>(even
       }
     };
 
-    setTimeout(() => {
-      setData({
-        board: generateBoard(4),
-        num: 110,
-        rank: 345,
-        score: 11,
-        username: 'user233',
-        top: [
-          { member: 'user1', score: 19 },
-          { member: 'user2', score: 18 },
-          { member: 'user3', score: 17 },
-          { member: 'user4', score: 16 },
-          { member: 'user5', score: 15 },
-        ],
-      });
-    }, 5000);
+    // setTimeout(() => {
+    //   setData({
+    //     board: generateBoard(5),
+    //     num: 110,
+    //     rank: 345,
+    //     score: 11,
+    //     username: 'user233',
+    //     top: [
+    //       { member: 'user1', score: 19 },
+    //       { member: 'user2', score: 18 },
+    //       { member: 'user3', score: 17 },
+    //       { member: 'user4', score: 16 },
+    //       { member: 'user5', score: 15 },
+    //     ],
+    //   });
+    // }, 500);
 
     window.addEventListener('message', messageHandler);
     return () => window.removeEventListener('message', messageHandler);

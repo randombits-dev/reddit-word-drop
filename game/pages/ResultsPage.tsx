@@ -1,5 +1,6 @@
 import { $page } from '../stores/game.ts';
 import { MainButton } from '../components/MainButton.tsx';
+import backImg from '../img/back.png';
 
 export const ResultsPage = ({ results }) => {
 
@@ -26,7 +27,9 @@ export const ResultsPage = ({ results }) => {
   };
 
   return <div
-    className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden font-['Comic_Helvetic']`}>
+    className={`fixed inset-0 flex flex-col items-center justify-center overflow-hidden font-['Comic_Helvetic'] bg-[url('${backImg}')]`}>
+
+    <div className="text-3xl font-bold pb-6">Word Drop</div>
 
     {
       results.score && <>
