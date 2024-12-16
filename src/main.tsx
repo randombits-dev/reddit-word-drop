@@ -61,6 +61,52 @@ Devvit.addMenuItem({
   },
 });
 
+Devvit.addSchedulerJob({
+  name: 'word-drop-auto',
+  onRun: async (event, context) => {
+    const subreddit = await context.reddit.getCurrentSubreddit();
+    const date = new Date().toLocaleDateString();
+    const post = await context.reddit.submitPost({
+      // Title of the post. You'll want to update!
+      title: `Word Drop - ${date} - 5x5`,
+      subredditName: subreddit.name,
+      preview: <Preview />,
+    });
+    void context.redis.hSet('board_' + post.id, { board: JSON.stringify(generateBoard(5)) });
+  },
+});
+
+Devvit.addMenuItem({
+  label: 'Toggle daily Word Drop creation',
+  location: 'subreddit',
+  forUserType: 'moderator',
+  onPress: async (event, context) => {
+    let jobId = await context.redis.get('jobId');
+    if (jobId) {
+      await context.scheduler.cancelJob(jobId);
+      context.redis.del('jobId');
+      context.ui.showToast('Disabled creating daily puzzles');
+    } else {
+      jobId = await context.scheduler.runJob({
+        name: 'word-drop-auto',
+        cron: '0 3 * * *',
+      });
+      context.redis.set('jobId', jobId);
+      context.ui.showToast('Enabled creating daily puzzles');
+    }
+  },
+});
+
+Devvit.addMenuItem({
+  label: 'clear',
+  location: 'subreddit',
+  forUserType: 'moderator',
+  onPress: async (_, context) => {
+    const jobId = (await context.redis.get('jobId')) || '0';
+    await context.scheduler.cancelJob(jobId);
+  },
+});
+
 // Add a post type definition
 Devvit.addCustomPostType({
   name: 'Webview Post Post',
